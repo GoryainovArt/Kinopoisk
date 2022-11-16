@@ -29,35 +29,25 @@ def parser(user_id,start_pos, proxy):
         while True:
             count += 1
             rq = f"https://www.kinopoisk.ru/user/{user_id}/votes/list/ord/date/perpage/200/page/{start_pos+count}/#list"
-            print(f'Страница {start_pos+count}')
-            print(f'Proxy: {proxy}')
             response = requests.get(rq, headers=headers, proxies=proxies)
             sleep(10)
             if response.status_code == 404:
-                print('Зашел в status code')
-                print(response)
-                print(28*'-')
-                print(response.text)
                 break
             else:
                 print('Зашел в else')
                 soup = BeautifulSoup(response.text, "lxml")
-
                 if soup.find("html")["prefix"] == "og: http://ogp.me/ns#":
                     print('Найдена Капча')
                     return start_pos+count
                 buf = soup.find_all("div", class_="item")
                 for i in buf:
                     name = i.find("div", class_="info").find("div", class_="nameRus").find("a").string
-                    print(name)
                     vote = i.find("div", class_="vote").string
                     id = i.find("div", class_="info").find("div", class_="nameRus").find("a")["href"][6:-1]
-
                     if check(name):
                         continue
                     else:
                         name = name[:-7]
-                        print('Пишем: ',name)
                         a_pen.writerow((id, name, vote))
         return 'success'
 
@@ -104,7 +94,6 @@ def main():
         a_pen.writerow(("KP_id","film_name","vote"))
     while True:
         rez = parser(user_id=2063724,start_pos=rez,proxy=proxies_list[count])
-        print("Выполнение функции: ", rez)
         if rez == 'success':
             break
         else:
