@@ -24,7 +24,7 @@ def check(name):
 
 def parser(user_id,start_pos, proxy):
     count = 0
-    with open(f"C:/Users/Home PC/Desktop/Python/VKR/Parsing_dataset/Users/User_Jora.csv", "a", encoding="utf-8",newline='') as file:
+    with open(f"C:/Users/Home PC/Desktop/Python/VKR/Parsing_dataset/Users/User_Alex.csv", "a", encoding="utf-8",newline='') as file:
         a_pen = csv.writer(file)
         while True:
             count += 1
